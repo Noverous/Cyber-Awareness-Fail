@@ -15,8 +15,15 @@ namespace Csharp_Console_Test_DOTNET
             Rectangle rect = new Rectangle(int.MaxValue, int.MaxValue, int.MinValue, int.MinValue);
             foreach (Screen screen in Screen.AllScreens)
                 rect = Rectangle.Union(rect, screen.Bounds);
-            //...and then assign those values
-            int maxHeight = (int)rect.Height;
+
+            //if multiple screens, position offset accordingly
+            int modifier = 0;
+            if (Screen.AllScreens.Length > 1) 
+            {
+                modifier = (rect.Width / Screen.AllScreens.Length);
+            }
+                //...and then assign those values
+                int maxHeight = (int)rect.Height;
             int maxWidth = (int)rect.Width;
             Random rnd = new Random();
             for (int i = 0; i < amount; i++)
@@ -32,7 +39,7 @@ namespace Csharp_Console_Test_DOTNET
                 int y = rnd.Next(0,maxHeight);
                 int x = rnd.Next(0,maxWidth);
                 f.StartPosition = FormStartPosition.Manual;
-                f.SetDesktopLocation(x-(maxWidth/Screen.AllScreens.Length), y);
+                f.SetDesktopLocation(x-modifier, y);
 
                 //text body of the window
                 TextBox body = new TextBox();
