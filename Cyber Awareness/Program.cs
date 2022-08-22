@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -8,8 +9,14 @@ namespace Csharp_Console_Test_DOTNET
     {
         static void Main(string[] args)
         {
+            using (EventLog neweventLog = new EventLog("Application"))
+            {
+                neweventLog.Source = "Application";
+                neweventLog.WriteEntry("MALWARE WAS EXECUTED, FAIL", EventLogEntryType.Error, 1337, 1);
+            }
+
             //number of windows created
-            int amount = 2048;
+            int amount = 64;
 
             //get the combined size of all monitors on the system
             Rectangle rect = new Rectangle(int.MaxValue, int.MaxValue, int.MinValue, int.MinValue);
@@ -19,11 +26,11 @@ namespace Csharp_Console_Test_DOTNET
             //if multiple screens, position offset accordingly
             int modifier = 0;
             if (Screen.AllScreens.Length > 1) 
-            {
+            { 
                 modifier = (rect.Width / Screen.AllScreens.Length);
             }
-                //...and then assign those values
-                int maxHeight = (int)rect.Height;
+            //...and then assign those values
+            int maxHeight = (int)rect.Height;
             int maxWidth = (int)rect.Width;
             Random rnd = new Random();
             for (int i = 0; i < amount; i++)
@@ -54,6 +61,7 @@ namespace Csharp_Console_Test_DOTNET
 
                 //render window, then repeat
                 f.Show();
+                System.Threading.Thread.Sleep(50);
             }
         }
     }
