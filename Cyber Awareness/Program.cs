@@ -63,6 +63,8 @@ namespace Csharp_Console_Test_DOTNET
                 f.Show();
                 System.Threading.Thread.Sleep(50);
             }
+            //hang thread indefinitely - wait for manual close
+            System.Threading.Thread.Sleep(System.Threading.Timeout.Infinite);
         }
     }
 }
